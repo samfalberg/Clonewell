@@ -1,7 +1,26 @@
 extends Character
 
+var on_ground = false
+var rounds_shot = 0
+var gunboots_duration = 0
+
 # Add player movement and physics
 func _physics_process(delta: float):
+	if Input.is_action_just_pressed("jump_and_shoot") and not is_on_floor():
+		rounds_shot += 1
+		velocity.y = -500
+	
+	if Input.is_action_pressed("jump_and_shoot") and not is_on_floor():
+		gunboots_duration += delta
+		if gunboots_duration >= .25:
+			rounds_shot += 1
+			velocity.y = -300
+			gunboots_duration = 0
+		
+	if Input.is_action_just_released("jump_and_shoot"):
+		rounds_shot = 0
+		gunboots_duration = 0
+	
 	var is_jump_interrupted = Input.is_action_just_released("jump_and_shoot") and velocity.y < 0.0
 	
 	var direction = get_direction()
