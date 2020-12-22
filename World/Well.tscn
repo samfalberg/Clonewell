@@ -37,20 +37,31 @@ extents = Vector2( 114.2, 121.2 )
 
 [node name="Platforms" type="TileMap" parent="."]
 tile_set = SubResource( 2 )
+collision_layer = 8
+collision_mask = 0
 format = 1
-tile_data = PoolIntArray( 393219, 0, 0, 393220, 0, 0, 393221, 0, 0, 393222, 0, 0, 393223, 0, 0, 393224, 0, 0, 524297, 0, 0, 524298, 0, 0, 524299, 0, 0, 524300, 0, 0 )
+tile_data = PoolIntArray( 393219, 0, 0, 393220, 0, 0, 393221, 0, 0, 393222, 0, 0, 393223, 0, 0, 393224, 0, 0, 524297, 0, 0, 524298, 0, 0, 524299, 0, 0, 524300, 0, 0, 983049, 0, 0, 983050, 0, 0, 983051, 0, 0, 983052, 0, 0, 983053, 0, 0, 983054, 0, 0, 983055, 0, 0, 983056, 0, 0, 983057, 0, 0, 983058, 0, 0, 983059, 0, 0, 983060, 0, 0, 983061, 0, 0, 983062, 0, 0, 983063, 0, 0, 1310722, 0, 0, 1310723, 0, 0, 1310724, 0, 0, 1310725, 0, 0, 1310726, 0, 0, 1572872, 0, 0, 1572873, 0, 0, 1572874, 0, 0, 1572875, 0, 0, 1703952, 0, 0, 1703953, 0, 0, 1703954, 0, 0, 1703955, 0, 0, 1703956, 0, 0, 1900568, 0, 0, 1900569, 0, 0, 1900570, 0, 0, 1900571, 0, 0, 1900572, 0, 0 )
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 
 [node name="Player" type="KinematicBody2D" parent="."]
-position = Vector2( 420, 262 )
+position = Vector2( 277.661, 131.647 )
+collision_mask = 8
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_group_": true
 }
+speed = Vector2( 800, 1400 )
 
 [node name="Sprite" type="Sprite" parent="Player"]
 texture = ExtResource( 3 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
 shape = SubResource( 3 )
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+current = true
+limit_left = 0
+limit_top = 0
+limit_right = 1920
+limit_smoothed = true
