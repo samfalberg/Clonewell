@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Characters/Cat_Enemy.gd" type="Script" id=1]
+[ext_resource path="res://Characters/cat.png" type="Texture" id=2]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 19.7339, 24.0313 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 33.5964, 31.4001 )
+
+[node name="Cat_Enemy" type="KinematicBody2D"]
+position = Vector2( 969.213, 440.74 )
+collision_layer = 2147483650
+collision_mask = 8
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Sprite" type="Sprite" parent="."]
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 2 )
+
+[node name="CollisionShapeHead" type="CollisionShape2D" parent="."]
+position = Vector2( -30.4645, -35.8578 )
+shape = SubResource( 1 )
+
+[node name="CollisionShapeBody" type="CollisionShape2D" parent="."]
+position = Vector2( -18.1628, 25.2514 )
+shape = SubResource( 2 )
