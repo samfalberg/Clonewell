@@ -1,8 +1,16 @@
 extends Character
 
+export var stomp_impulse = 1000.0
+
 var on_ground = false
 var rounds_shot = 0
 var gunboots_duration = 0
+
+func _on_EnemyDetector_area_entered(area):
+	velocity = calculate_stomp_velocity(velocity, stomp_impulse)
+	
+func _on_EnemyDetector_body_entered(body):
+	queue_free()
 
 # Add player movement and physics
 func _physics_process(delta: float):
@@ -60,3 +68,9 @@ func calculate_move_velocity(
 		new_v.y = 0.0
 		
 	return new_v
+
+# Cause an upward stomp impulse when player stomps on enemy heads
+func calculate_stomp_velocity(linear_velocity: Vector2, impulse: float) -> Vector2:
+	var out = linear_velocity
+	out.y = -impulse
+	return out

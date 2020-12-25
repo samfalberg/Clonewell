@@ -3,6 +3,13 @@ extends Character
 var timer = 0.0
 var direction = "Left"
 
+# Kill enemy when stomped on head
+func _on_HitDetector_body_entered(body: PhysicsBody2D):
+	if body.global_position.y > get_node("HitDetector").global_position.y:
+		return
+	get_node("CollisionShape2D").disabled = true
+	queue_free()	
+
 func _physics_process(delta: float):
 	timer += delta
 	velocity.y += gravity * delta
@@ -26,7 +33,11 @@ func _physics_process(delta: float):
 func change_direction():
 	if direction == "Left":
 		get_node("Sprite").set_flip_h(true)
+		get_node("CollisionShape2D").position.x *= -1
+		get_node("HitDetector/KillShape2D").position.x *= -1
 		direction = "Right"
 	elif direction == "Right":
 		get_node("Sprite").set_flip_h(false)
+		get_node("CollisionShape2D").position.x *= -1
+		get_node("HitDetector/KillShape2D").position.x *= -1
 		direction = "Left"

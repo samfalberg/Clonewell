@@ -3,29 +3,31 @@
 [ext_resource path="res://Characters/Cat_Enemy.gd" type="Script" id=1]
 [ext_resource path="res://Characters/cat.png" type="Texture" id=2]
 
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 19.7339, 24.0313 )
-
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 33.5964, 31.4001 )
+extents = Vector2( 32.1823, 40.5927 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 36.647, 22.4124 )
 
 [node name="Cat_Enemy" type="KinematicBody2D"]
-position = Vector2( 969.213, 440.74 )
+position = Vector2( 964.97, 447.811 )
 collision_layer = 2147483650
 collision_mask = 8
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_group_": true
-}
 
 [node name="Sprite" type="Sprite" parent="."]
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 2 )
 
-[node name="CollisionShapeHead" type="CollisionShape2D" parent="."]
-position = Vector2( -30.4645, -35.8578 )
-shape = SubResource( 1 )
-
-[node name="CollisionShapeBody" type="CollisionShape2D" parent="."]
-position = Vector2( -18.1628, 25.2514 )
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( -24.5267, 21.0087 )
 shape = SubResource( 2 )
+
+[node name="HitDetector" type="Area2D" parent="."]
+modulate = Color( 0, 0.298039, 1, 1 )
+collision_layer = 2
+
+[node name="KillShape2D" type="CollisionShape2D" parent="HitDetector"]
+position = Vector2( -26.163, -45.962 )
+shape = SubResource( 3 )
+[connection signal="body_entered" from="HitDetector" to="." method="_on_HitDetector_body_entered"]
