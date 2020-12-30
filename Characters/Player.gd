@@ -1,5 +1,7 @@
 extends Character
 
+const BULLET_SCENE = preload("res://Objects/Bullet.tscn")
+
 export var stomp_impulse = 1000.0
 
 var on_ground = false
@@ -18,6 +20,7 @@ func _physics_process(delta: float):
 	if Input.is_action_just_pressed("jump_and_shoot") and not is_on_floor():
 		rounds_shot += 1
 		velocity.y = -500
+		shoot_bullet()
 	
 	# Bullets fired continuously when gun button held down
 	if Input.is_action_pressed("jump_and_shoot") and not is_on_floor():
@@ -26,6 +29,7 @@ func _physics_process(delta: float):
 			rounds_shot += 1
 			velocity.y = -300
 			gunboots_duration = 0
+			shoot_bullet()
 		
 	if Input.is_action_just_released("jump_and_shoot"):
 		rounds_shot = 0
@@ -74,3 +78,8 @@ func calculate_stomp_velocity(linear_velocity: Vector2, impulse: float) -> Vecto
 	var out = linear_velocity
 	out.y = -impulse
 	return out
+	
+func shoot_bullet():
+	var bullet = BULLET_SCENE.instance()
+	get_parent().add_child(bullet)
+	bullet.position = get_node("Position2D").global_position

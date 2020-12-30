@@ -3,10 +3,10 @@
 [ext_resource path="res://Characters/Cat_Enemy.gd" type="Script" id=1]
 [ext_resource path="res://Characters/cat.png" type="Texture" id=2]
 
-[sub_resource type="RectangleShape2D" id=2]
+[sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 32.1823, 40.5927 )
 
-[sub_resource type="RectangleShape2D" id=3]
+[sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 36.647, 22.4124 )
 
 [node name="Cat_Enemy" type="KinematicBody2D"]
@@ -21,7 +21,7 @@ texture = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( -24.5267, 21.0087 )
-shape = SubResource( 2 )
+shape = SubResource( 1 )
 
 [node name="HitDetector" type="Area2D" parent="."]
 modulate = Color( 0, 0.298039, 1, 1 )
@@ -29,5 +29,6 @@ collision_layer = 2
 
 [node name="KillShape2D" type="CollisionShape2D" parent="HitDetector"]
 position = Vector2( -26.163, -45.962 )
-shape = SubResource( 3 )
+shape = SubResource( 2 )
+[connection signal="area_entered" from="HitDetector" to="." method="_on_HitDetector_area_entered"]
 [connection signal="body_entered" from="HitDetector" to="." method="_on_HitDetector_body_entered"]
