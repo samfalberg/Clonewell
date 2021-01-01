@@ -19,7 +19,6 @@ func _on_EnemyDetector_body_entered(_body):
 	health -= 1
 	if health == 0:
 		queue_free()
-	print(health)
 
 # Add player movement and physics
 func _physics_process(delta: float):
