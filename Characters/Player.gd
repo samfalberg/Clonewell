@@ -5,34 +5,34 @@ const BULLET_SCENE = preload("res://Objects/Bullet.tscn")
 export var stomp_impulse = 1000.0
 
 var on_ground = false
-var rounds_shot = 0
+var shots_left = 10
 var gunboots_duration = 0
 
-func _on_EnemyDetector_area_entered(area):
+func _on_EnemyDetector_area_entered(_area):
 	velocity = calculate_stomp_velocity(velocity, stomp_impulse)
 	
-func _on_EnemyDetector_body_entered(body):
+func _on_EnemyDetector_body_entered(_body):
 	queue_free()
 
 # Add player movement and physics
 func _physics_process(delta: float):
 	# One bullet fired when gun button pressed once in air
-	if Input.is_action_just_pressed("jump_and_shoot") and not is_on_floor():
-		rounds_shot += 1
+	if Input.is_action_just_pressed("jump_and_shoot") and not is_on_floor() and shots_left > 0:
+		shots_left -= 1
 		velocity.y = -500
 		shoot_bullet()
 	
 	# Bullets fired continuously when gun button held down
-	if Input.is_action_pressed("jump_and_shoot") and not is_on_floor():
+	if Input.is_action_pressed("jump_and_shoot") and not is_on_floor() and shots_left > 0:
 		gunboots_duration += delta
-		if gunboots_duration >= .25:
-			rounds_shot += 1
-			velocity.y = -300
+		if gunboots_duration >= 0.15:
+			shots_left -= 1
+			velocity.y = -250
 			gunboots_duration = 0
 			shoot_bullet()
 		
 	if Input.is_action_just_released("jump_and_shoot"):
-		rounds_shot = 0
+		shots_left = 10
 		gunboots_duration = 0
 	
 	var is_jump_interrupted = Input.is_action_just_released("jump_and_shoot") and velocity.y < 0.0

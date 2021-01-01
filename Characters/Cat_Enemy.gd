@@ -5,7 +5,7 @@ var direction = "Left"
 var health = 3
 
 # Kill enemy when shot 3 times
-func _on_HitDetector_area_entered(area):
+func _on_HitDetector_area_entered(_area):
 	health -= 1
 	if health == 0:
 		get_node("CollisionShape2D").disabled = true
