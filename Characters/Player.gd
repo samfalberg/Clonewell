@@ -4,12 +4,12 @@ const BULLET_SCENE = preload("res://Objects/Bullet.tscn")
 
 export var stomp_impulse = 1000.0
 
-var on_ground = false
+var can_continue_fire = false
 var shots_left = 10
 var gunboots_duration = 0
 var health = 4
 
-# Kill enemy and realod gunboots when player stomps on head
+# Kill enemy and reload gunboots when player stomps on head
 func _on_EnemyDetector_area_entered(_area):
 	velocity = calculate_stomp_velocity(velocity, stomp_impulse)
 	shots_left = 10
@@ -25,11 +25,12 @@ func _physics_process(delta: float):
 	# One bullet fired when gun button pressed once in air
 	if Input.is_action_just_pressed("jump_and_shoot") and not is_on_floor() and shots_left > 0:
 		shots_left -= 1
-		velocity.y = -500
+		velocity.y = -250
+		can_continue_fire = true # Player is not mid-jump, can continue firing if player keeps button held down
 		shoot_bullet()
 	
 	# Bullets fired continuously when gun button held down
-	if Input.is_action_pressed("jump_and_shoot") and not is_on_floor() and shots_left > 0:
+	if Input.is_action_pressed("jump_and_shoot") and not is_on_floor() and shots_left > 0 and can_continue_fire:
 		gunboots_duration += delta
 		if gunboots_duration >= 0.15:
 			shots_left -= 1
@@ -38,8 +39,12 @@ func _physics_process(delta: float):
 			shoot_bullet()
 		
 	if Input.is_action_just_released("jump_and_shoot"):
-		shots_left = 10
 		gunboots_duration = 0
+		can_continue_fire = false
+		
+	# Reload gunboots when on floor
+	if is_on_floor():
+		shots_left = 10
 	
 	var is_jump_interrupted = Input.is_action_just_released("jump_and_shoot") and velocity.y < 0.0
 	
