@@ -7,12 +7,19 @@ export var stomp_impulse = 1000.0
 var on_ground = false
 var shots_left = 10
 var gunboots_duration = 0
+var health = 4
 
+# Kill enemy and realod gunboots when player stomps on head
 func _on_EnemyDetector_area_entered(_area):
 	velocity = calculate_stomp_velocity(velocity, stomp_impulse)
+	shots_left = 10
 	
+# Lower player health when enemy collides with them, kill player when health is 0
 func _on_EnemyDetector_body_entered(_body):
-	queue_free()
+	health -= 1
+	if health == 0:
+		queue_free()
+	print(health)
 
 # Add player movement and physics
 func _physics_process(delta: float):
