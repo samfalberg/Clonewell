@@ -7,7 +7,8 @@ export var stomp_impulse = 1000.0
 var can_continue_fire = false
 var shots_left = 10
 var gunboots_duration = 0
-var health = 4
+var curr_health = 4
+var total_health = 4
 
 # Kill enemy and reload gunboots when player stomps on head
 func _on_EnemyDetector_area_entered(_area):
@@ -16,8 +17,10 @@ func _on_EnemyDetector_area_entered(_area):
 	
 # Lower player health when enemy collides with them, kill player when health is 0
 func _on_EnemyDetector_body_entered(_body):
-	health -= 1
-	if health == 0:
+	curr_health -= 1
+	get_node("CanvasLayer/Interface").get_child(0).get_child(0).get_child(0).text = str(curr_health) + "/" + str(total_health) # Update health text in GUI
+	get_node("CanvasLayer/Interface").get_child(0).get_child(1).value = curr_health # Update health bar in GUI
+	if curr_health == 0:
 		queue_free()
 
 # Add player movement and physics
