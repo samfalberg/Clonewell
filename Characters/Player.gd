@@ -18,8 +18,9 @@ func _on_EnemyDetector_area_entered(_area):
 # Lower player health when enemy collides with them, kill player when health is 0
 func _on_EnemyDetector_body_entered(_body):
 	curr_health -= 1
-	get_node("CanvasLayer/Interface").get_child(0).get_child(0).get_child(0).text = str(curr_health) + "/" + str(total_health) # Update health text in GUI
-	get_node("CanvasLayer/Interface").get_child(0).get_child(1).value = curr_health # Update health bar in GUI
+	var health_node = get_node("CanvasLayer/Interface").get_child(0)
+	health_node.get_child(0).get_child(0).text = str(curr_health) + "/" + str(total_health) # Update health text in GUI
+	health_node.get_child(1).value = curr_health # Update health bar in GUI
 	if curr_health == 0:
 		queue_free()
 
