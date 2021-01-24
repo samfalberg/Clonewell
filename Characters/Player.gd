@@ -5,15 +5,20 @@ const BULLET_SCENE = preload("res://Objects/Bullet.tscn")
 export var stomp_impulse = 1000.0
 
 var can_continue_fire = false
+var total_shots = 10
 var shots_left = 10
 var gunboots_duration = 0
 var curr_health = 4
 var total_health = 4
 
+func _ready():
+	get_node("CanvasLayer/Interface").get_child(1).get_child(0).text = str(shots_left) + "/" + str(total_shots) # Set bullet count text in GUI
+
 # Kill enemy and reload gunboots when player stomps on head
 func _on_EnemyDetector_area_entered(_area):
 	velocity = calculate_stomp_velocity(velocity, stomp_impulse)
-	shots_left = 10
+	shots_left = total_shots
+	get_node("CanvasLayer/Interface").get_child(1).get_child(0).text = str(shots_left) + "/" + str(total_shots) # Update bullet count text in GUI
 	
 # Lower player health when enemy collides with them, kill player when health is 0
 func _on_EnemyDetector_body_entered(_body):
@@ -29,6 +34,7 @@ func _physics_process(delta: float):
 	# One bullet fired when gun button pressed once in air
 	if Input.is_action_just_pressed("jump_and_shoot") and not is_on_floor() and shots_left > 0:
 		shots_left -= 1
+		get_node("CanvasLayer/Interface").get_child(1).get_child(0).text = str(shots_left) + "/" + str(total_shots) # Update bullet count text in GUI
 		velocity.y = -250
 		can_continue_fire = true # Player is not mid-jump, can continue firing if player keeps button held down
 		shoot_bullet()
@@ -38,6 +44,7 @@ func _physics_process(delta: float):
 		gunboots_duration += delta
 		if gunboots_duration >= 0.15:
 			shots_left -= 1
+			get_node("CanvasLayer/Interface").get_child(1).get_child(0).text = str(shots_left) + "/" + str(total_shots) # Update bullet count text in GUI
 			velocity.y = -250
 			gunboots_duration = 0
 			shoot_bullet()
@@ -48,7 +55,8 @@ func _physics_process(delta: float):
 		
 	# Reload gunboots when on floor
 	if is_on_floor():
-		shots_left = 10
+		shots_left = total_shots
+		get_node("CanvasLayer/Interface").get_child(1).get_child(0).text = str(shots_left) + "/" + str(total_shots) # Update bullet count text in GUI
 	
 	var is_jump_interrupted = Input.is_action_just_released("jump_and_shoot") and velocity.y < 0.0
 	
