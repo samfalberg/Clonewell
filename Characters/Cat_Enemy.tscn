@@ -4,13 +4,13 @@
 [ext_resource path="res://Characters/cat.png" type="Texture" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 32.1823, 40.5927 )
+extents = Vector2( 53.2279, 40.5927 )
 
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 36.647, 22.4124 )
+extents = Vector2( 18.5961, 22.4124 )
 
 [node name="Cat_Enemy" type="KinematicBody2D"]
-position = Vector2( 964.97, 447.811 )
+position = Vector2( 964.223, 447.811 )
 scale = Vector2( 0.7, 0.7 )
 collision_layer = 2147483650
 collision_mask = 8

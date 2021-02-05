@@ -27,7 +27,8 @@ func _on_EnemyDetector_body_entered(_body):
 	health_node.get_child(0).get_child(0).text = str(curr_health) + "/" + str(total_health) # Update health text in GUI
 	health_node.get_child(1).value = curr_health # Update health bar in GUI
 	if curr_health == 0:
-		queue_free()
+		#queue_free()
+		get_node("CanvasLayer2/GameOver").visible = true
 
 # Add player movement and physics
 func _physics_process(delta: float):
