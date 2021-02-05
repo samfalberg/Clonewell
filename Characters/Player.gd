@@ -8,26 +8,36 @@ var can_continue_fire = false
 var total_shots = 10
 var shots_left = 10
 var gunboots_duration = 0
+var invincibility_duration = 0
+var is_invincible = false
 var curr_health = 4
 var total_health = 4
+onready var invincibility_animation = $InvincibilityAnimation
 
 func _ready():
-	get_node("CanvasLayer/Interface").get_child(1).get_child(0).text = str(shots_left) + "/" + str(total_shots) # Set bullet count text in GUI
+	# Set bullet count text in GUI
+	get_node("CanvasLayer/Interface").get_child(1).get_child(0).text = str(shots_left) + "/" + str(total_shots) 
 
 # Kill enemy and reload gunboots when player stomps on head
 func _on_EnemyDetector_area_entered(_area):
 	velocity = calculate_stomp_velocity(velocity, stomp_impulse)
 	shots_left = total_shots
-	get_node("CanvasLayer/Interface").get_child(1).get_child(0).text = str(shots_left) + "/" + str(total_shots) # Update bullet count text in GUI
+	# Update bullet count text in GUI
+	get_node("CanvasLayer/Interface").get_child(1).get_child(0).text = str(shots_left) + "/" + str(total_shots) 
 	
 # Lower player health when enemy collides with them, kill player when health is 0
 func _on_EnemyDetector_body_entered(_body):
+	if is_invincible: # Prevents player from taking damage while invincible
+		return
+	is_invincible = true
+	invincibility_animation.play("StartBlink")
 	curr_health -= 1
 	var health_node = get_node("CanvasLayer/Interface").get_child(0)
-	health_node.get_child(0).get_child(0).text = str(curr_health) + "/" + str(total_health) # Update health text in GUI
-	health_node.get_child(1).value = curr_health # Update health bar in GUI
+	# Update health text in GUI
+	health_node.get_child(0).get_child(0).text = str(curr_health) + "/" + str(total_health) 
+	# Update health bar in GUI
+	health_node.get_child(1).value = curr_health 
 	if curr_health == 0:
-		#queue_free()
 		get_node("CanvasLayer2/GameOver").visible = true
 
 # Add player movement and physics
@@ -35,7 +45,8 @@ func _physics_process(delta: float):
 	# One bullet fired when gun button pressed once in air
 	if Input.is_action_just_pressed("jump_and_shoot") and not is_on_floor() and shots_left > 0:
 		shots_left -= 1
-		get_node("CanvasLayer/Interface").get_child(1).get_child(0).text = str(shots_left) + "/" + str(total_shots) # Update bullet count text in GUI
+		 # Update bullet count text in GUI
+		get_node("CanvasLayer/Interface").get_child(1).get_child(0).text = str(shots_left) + "/" + str(total_shots)
 		velocity.y = -250
 		can_continue_fire = true # Player is not mid-jump, can continue firing if player keeps button held down
 		shoot_bullet()
@@ -45,7 +56,8 @@ func _physics_process(delta: float):
 		gunboots_duration += delta
 		if gunboots_duration >= 0.15:
 			shots_left -= 1
-			get_node("CanvasLayer/Interface").get_child(1).get_child(0).text = str(shots_left) + "/" + str(total_shots) # Update bullet count text in GUI
+			# Update bullet count text in GUI
+			get_node("CanvasLayer/Interface").get_child(1).get_child(0).text = str(shots_left) + "/" + str(total_shots) 
 			velocity.y = -250
 			gunboots_duration = 0
 			shoot_bullet()
@@ -57,7 +69,15 @@ func _physics_process(delta: float):
 	# Reload gunboots when on floor
 	if is_on_floor():
 		shots_left = total_shots
-		get_node("CanvasLayer/Interface").get_child(1).get_child(0).text = str(shots_left) + "/" + str(total_shots) # Update bullet count text in GUI
+		# Update bullet count text in GUI
+		get_node("CanvasLayer/Interface").get_child(1).get_child(0).text = str(shots_left) + "/" + str(total_shots)
+		
+	if is_invincible:
+		invincibility_duration += delta
+		if invincibility_duration >= 2: # Invincibility only lasts 2 seconds
+			is_invincible = false
+			invincibility_duration = 0
+			invincibility_animation.play("StopBlink")
 	
 	var is_jump_interrupted = Input.is_action_just_released("jump_and_shoot") and velocity.y < 0.0
 	

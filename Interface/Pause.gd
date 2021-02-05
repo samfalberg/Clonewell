@@ -12,6 +12,6 @@ func _on_ResumeButton_pressed():
 	get_tree().paused = new_pause_state
 	visible = new_pause_state # Menu is only visible when paused
 
-#Exit game on quit button press
+# Exit game on quit button press
 func _on_QuitButton_pressed():
 	get_tree().quit()
