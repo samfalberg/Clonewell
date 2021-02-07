@@ -3,6 +3,7 @@ extends Character
 var timer = 0.0
 var direction = "Left"
 var health = 3
+var player_near = false
 
 # Kill enemy when shot 3 times
 func _on_HitDetector_area_entered(_area):
@@ -17,6 +18,15 @@ func _on_HitDetector_body_entered(body: PhysicsBody2D):
 		return
 	get_node("CollisionShape2D").disabled = true
 	queue_free()	
+	
+# Make cat pounce when player is near	
+func _on_PlayerNearDetector_body_entered(body):
+	timer = 0.0
+	player_near = true
+	
+# Stop cat from pouncing when player not near
+func _on_PlayerNearDetector_body_exited(body):
+	player_near = false
 
 func _physics_process(delta: float):
 	timer += delta
@@ -26,8 +36,8 @@ func _physics_process(delta: float):
 	if is_on_floor():
 		velocity.x = 0.0
 	
-	# Make cat enemy jump every 5 seconds, jump left if facing left, jump right if facing right
-	if timer >= 5.0:
+	# Make cat enemy jump every 3.5 seconds when player near, jump the direction they're facing
+	if timer >= 3.5 and player_near:
 		velocity.x = 300.0 * (-1.0 if direction == "Left" else 1.0)
 		velocity.y = -2000.0
 		timer = 0.0
