@@ -4,9 +4,11 @@ var timer = 0.0
 var direction = "Left"
 var health = 3
 var player_near = false
+onready var damaged_animation = $DamagedAnimation
 
 # Kill enemy when shot 3 times
 func _on_HitDetector_area_entered(_area):
+	damaged_animation.play("Damaged")
 	health -= 1
 	if health == 0:
 		get_node("CollisionShape2D").disabled = true
