@@ -66,10 +66,11 @@ margin_top = 8.0
 margin_right = 8.0
 margin_bottom = 8.0
 
-[node name="CanvasLayer2" type="CanvasLayer" parent="Player"]
-layer = 100
+[node name="GameOver" parent="Player/CanvasLayer" instance=ExtResource( 7 )]
+pause_mode = 2
+visible = false
 
-[node name="GameOver" parent="Player/CanvasLayer2" instance=ExtResource( 7 )]
+[node name="Pause" parent="Player/CanvasLayer" instance=ExtResource( 6 )]
 visible = false
 
 [node name="Cat_Enemy" parent="." instance=ExtResource( 3 )]
@@ -89,9 +90,3 @@ position = Vector2( 884.198, 6677.11 )
 
 [node name="Cat_Enemy6" parent="." instance=ExtResource( 3 )]
 position = Vector2( 901.149, 12180.5 )
-
-[node name="CanvasLayer2" type="CanvasLayer" parent="."]
-layer = 100
-
-[node name="Pause" parent="CanvasLayer2" instance=ExtResource( 6 )]
-visible = false

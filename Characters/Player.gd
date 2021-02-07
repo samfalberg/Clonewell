@@ -38,7 +38,10 @@ func _on_EnemyDetector_body_entered(_body):
 	# Update health bar in GUI
 	health_node.get_child(1).value = curr_health 
 	if curr_health == 0:
-		get_node("CanvasLayer2/GameOver").visible = true
+		# Prevent user from bring up pause menu while in game over
+		get_node("CanvasLayer/Pause").set_process_input(false)
+		get_tree().paused = true
+		get_node("CanvasLayer/GameOver").visible = true
 
 # Add player movement and physics
 func _physics_process(delta: float):
