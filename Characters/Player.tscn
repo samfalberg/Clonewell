@@ -2,10 +2,24 @@
 
 [ext_resource path="res://Characters/Player.gd" type="Script" id=1]
 [ext_resource path="res://Characters/well_boy.png" type="Texture" id=2]
-[ext_resource path="res://Shaders/RedColor.shader" type="Shader" id=3]
+
+[sub_resource type="Shader" id=6]
+code = "shader_type canvas_item;
+
+uniform bool active = true;
+
+void fragment() {
+	vec4 previous_color = texture(TEXTURE, UV);
+	vec4 red_color = vec4(0.4, 0.4, 0.4, previous_color.a);
+	vec4 new_color = previous_color;
+	if (active) {
+		new_color = red_color;
+	}
+	COLOR = new_color;
+}"
 
 [sub_resource type="ShaderMaterial" id=1]
-shader = ExtResource( 3 )
+shader = SubResource( 6 )
 shader_param/active = false
 
 [sub_resource type="Animation" id=2]

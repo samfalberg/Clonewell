@@ -33,9 +33,8 @@ func _on_EnemyDetector_body_entered(_body):
 	invincibility_animation.play("StartBlink")
 	curr_health -= 1
 	var health_node = get_node("CanvasLayer/Interface").get_child(0)
-	# Update health text in GUI
+	# Update health text and health bar in GUI
 	health_node.get_child(0).get_child(0).text = str(curr_health) + "/" + str(total_health) 
-	# Update health bar in GUI
 	health_node.get_child(1).value = curr_health 
 	if curr_health == 0:
 		# Prevent user from bring up pause menu while in game over
