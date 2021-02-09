@@ -3,7 +3,7 @@
 [ext_resource path="res://Characters/Player.gd" type="Script" id=1]
 [ext_resource path="res://Characters/well_boy.png" type="Texture" id=2]
 
-[sub_resource type="Shader" id=6]
+[sub_resource type="Shader" id=7]
 code = "shader_type canvas_item;
 
 uniform bool active = true;
@@ -18,12 +18,11 @@ void fragment() {
 	COLOR = new_color;
 }"
 
-[sub_resource type="ShaderMaterial" id=1]
-shader = SubResource( 6 )
+[sub_resource type="ShaderMaterial" id=8]
+shader = SubResource( 7 )
 shader_param/active = false
 
-[sub_resource type="Animation" id=2]
-resource_name = "StartBlink"
+[sub_resource type="Animation" id=9]
 length = 0.2
 loop = true
 tracks/0/type = "value"
@@ -39,8 +38,7 @@ tracks/0/keys = {
 "values": [ true, false ]
 }
 
-[sub_resource type="Animation" id=3]
-resource_name = "StopBlink"
+[sub_resource type="Animation" id=10]
 length = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:material:shader_param/active")
@@ -55,15 +53,15 @@ tracks/0/keys = {
 "values": [ false ]
 }
 
-[sub_resource type="RectangleShape2D" id=4]
+[sub_resource type="RectangleShape2D" id=11]
 extents = Vector2( 67.2411, 115.763 )
 
-[sub_resource type="RectangleShape2D" id=5]
+[sub_resource type="RectangleShape2D" id=6]
 extents = Vector2( 71.6264, 123.959 )
 
 [node name="Player" type="KinematicBody2D"]
 position = Vector2( 288.34, 83.5928 )
-scale = Vector2( 0.5, 0.5 )
+scale = Vector2( 0.25, 0.25 )
 collision_mask = 8
 script = ExtResource( 1 )
 __meta__ = {
@@ -71,17 +69,17 @@ __meta__ = {
 }
 
 [node name="Sprite" type="Sprite" parent="."]
-material = SubResource( 1 )
+material = SubResource( 8 )
 position = Vector2( 2, 0 )
 texture = ExtResource( 2 )
 
 [node name="InvincibilityAnimation" type="AnimationPlayer" parent="."]
-anims/StartBlink = SubResource( 2 )
-anims/StopBlink = SubResource( 3 )
+anims/StartBlink = SubResource( 9 )
+anims/StopBlink = SubResource( 10 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0, 9.2137 )
-shape = SubResource( 4 )
+shape = SubResource( 11 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
@@ -97,7 +95,7 @@ collision_mask = 2
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyDetector"]
 modulate = Color( 0.0196078, 0.141176, 0.678431, 1 )
 position = Vector2( 0, 6.80388 )
-shape = SubResource( 5 )
+shape = SubResource( 6 )
 
 [node name="Position2D" type="Position2D" parent="."]
 position = Vector2( 8.48532, 104.95 )

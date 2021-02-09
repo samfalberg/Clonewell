@@ -4,11 +4,11 @@
 [ext_resource path="res://Characters/cat.png" type="Texture" id=2]
 [ext_resource path="res://Shaders/GreyColor.shader" type="Shader" id=3]
 
-[sub_resource type="ShaderMaterial" id=4]
+[sub_resource type="ShaderMaterial" id=6]
 shader = ExtResource( 3 )
-shader_param/active = true
+shader_param/active = false
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=7]
 resource_name = "Damaged"
 length = 0.2
 tracks/0/type = "value"
@@ -24,41 +24,36 @@ tracks/0/keys = {
 "values": [ true, false ]
 }
 
-[sub_resource type="RectangleShape2D" id=1]
+[sub_resource type="RectangleShape2D" id=8]
 extents = Vector2( 53.2279, 40.5927 )
 
-[sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 18.5961, 22.4124 )
-
-[sub_resource type="RectangleShape2D" id=3]
+[sub_resource type="RectangleShape2D" id=4]
 extents = Vector2( 1345.14, 547.056 )
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 18.5961, 22.4124 )
 
 [node name="Cat_Enemy" type="KinematicBody2D"]
 position = Vector2( 966.837, 444.078 )
-scale = Vector2( 0.7, 0.7 )
+scale = Vector2( 0.35, 0.35 )
 collision_layer = 2147483650
 collision_mask = 8
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true
+}
 
 [node name="Sprite" type="Sprite" parent="."]
-material = SubResource( 4 )
+material = SubResource( 6 )
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 2 )
 
 [node name="DamagedAnimation" type="AnimationPlayer" parent="."]
-anims/Damaged = SubResource( 6 )
+anims/Damaged = SubResource( 7 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( -24.5267, 21.0087 )
-shape = SubResource( 1 )
-
-[node name="HitDetector" type="Area2D" parent="."]
-modulate = Color( 0, 0.298039, 1, 1 )
-collision_layer = 2
-
-[node name="KillShape2D" type="CollisionShape2D" parent="HitDetector"]
-position = Vector2( -26.163, -45.962 )
-shape = SubResource( 2 )
+shape = SubResource( 8 )
 
 [node name="PlayerNearDetector" type="Area2D" parent="."]
 collision_layer = 0
@@ -66,8 +61,16 @@ collision_layer = 0
 [node name="NearShape2D" type="CollisionShape2D" parent="PlayerNearDetector"]
 modulate = Color( 0.0862745, 0.960784, 0.101961, 1 )
 position = Vector2( -19.9318, 6.93365 )
-shape = SubResource( 3 )
-[connection signal="area_entered" from="HitDetector" to="." method="_on_HitDetector_area_entered"]
-[connection signal="body_entered" from="HitDetector" to="." method="_on_HitDetector_body_entered"]
+shape = SubResource( 4 )
+
+[node name="HitDetector" type="Area2D" parent="."]
+modulate = Color( 0, 0.298039, 1, 1 )
+collision_layer = 2
+
+[node name="KillShape2D" type="CollisionShape2D" parent="HitDetector"]
+position = Vector2( -26.163, -45.962 )
+shape = SubResource( 5 )
 [connection signal="body_entered" from="PlayerNearDetector" to="." method="_on_PlayerNearDetector_body_entered"]
 [connection signal="body_exited" from="PlayerNearDetector" to="." method="_on_PlayerNearDetector_body_exited"]
+[connection signal="area_entered" from="HitDetector" to="." method="_on_HitDetector_area_entered"]
+[connection signal="body_entered" from="HitDetector" to="." method="_on_HitDetector_body_entered"]
