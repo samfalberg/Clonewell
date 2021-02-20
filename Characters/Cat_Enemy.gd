@@ -5,21 +5,22 @@ var direction = "Left"
 var health = 3
 var player_near = false
 onready var damaged_animation = $DamagedAnimation
-
-# Kill enemy when shot 3 times
-func _on_HitDetector_area_entered(_area):
-	damaged_animation.play("Damaged")
-	health -= 1
-	if health == 0:
+	
+func _on_HitDetector_area_shape_entered(area_id, area, area_shape, self_shape):
+	# Find name of the node that entered cat
+	var collision_name = area.shape_owner_get_owner(shape_find_owner(area_shape))
+	var area_name = collision_name.get_parent().get_name()
+	# If node is bullet, lower health by 1
+	if area_name == 'Bullet':
+		health -= 1
+		if health == 0:
+			get_node("CollisionShape2D").disabled = true
+			queue_free()
+		damaged_animation.play("Damaged")
+	# Kill enemy immediately when stomped on head
+	elif area_name == 'StompZone':
 		get_node("CollisionShape2D").disabled = true
 		queue_free()
-
-# Kill enemy when stomped on head
-func _on_HitDetector_body_entered(body: PhysicsBody2D):
-	if body.global_position.y > get_node("HitDetector").global_position.y:
-		return
-	get_node("CollisionShape2D").disabled = true
-	queue_free()	
 	
 # Make cat pounce when player is near	
 func _on_PlayerNearDetector_body_entered(body):

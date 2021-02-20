@@ -19,12 +19,12 @@ func _ready():
 	get_node("CanvasLayer/Interface").get_child(1).get_child(0).text = str(shots_left) + "/" + str(total_shots) 
 
 # Kill enemy and reload gunboots when player stomps on head
-func _on_EnemyDetector_area_entered(_area):
+func _on_StompZone_area_entered(area):
 	velocity = calculate_stomp_velocity(velocity, stomp_impulse)
 	shots_left = total_shots
 	# Update bullet count text in GUI
 	get_node("CanvasLayer/Interface").get_child(1).get_child(0).text = str(shots_left) + "/" + str(total_shots) 
-	
+
 # Lower player health when enemy collides with them, kill player when health is 0
 func _on_EnemyDetector_body_entered(_body):
 	if is_invincible: # Prevents player from taking damage while invincible
