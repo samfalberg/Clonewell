@@ -12,11 +12,16 @@ var invincibility_duration = 0
 var is_invincible = false
 var curr_health = 4
 var total_health = 4
+var audio_player = AudioStreamPlayer.new()
+var empty_sound_not_played = true
 onready var invincibility_animation = $InvincibilityAnimation
+onready var death_audio = $DeathAudio
 
 func _ready():
 	# Set bullet count text in GUI
 	get_node("CanvasLayer/Interface").get_child(1).get_child(0).text = str(shots_left) + "/" + str(total_shots) 
+	# Add AudioStreamPlayer to player
+	self.add_child(audio_player)
 
 # Kill enemy and reload gunboots when player stomps on head
 func _on_StompZone_area_entered(area):
@@ -33,10 +38,16 @@ func _on_EnemyDetector_body_entered(_body):
 	invincibility_animation.play("StartBlink")
 	curr_health -= 1
 	var health_node = get_node("CanvasLayer/Interface").get_child(0)
+	if curr_health > 0:
+		audio_player.stream = load("res://Sounds/player_hit.wav")
+		audio_player.play()
 	# Update health text and health bar in GUI
 	health_node.get_child(0).get_child(0).text = str(curr_health) + "/" + str(total_health) 
 	health_node.get_child(1).value = curr_health 
 	if curr_health == 0:
+		death_audio.play()
+		# Don't pause until the sound effect plays
+		yield(death_audio, "finished") 
 		# Prevent user from bring up pause menu while in game over
 		get_node("CanvasLayer/Pause").set_process_input(false)
 		get_tree().paused = true
@@ -52,6 +63,10 @@ func _physics_process(delta: float):
 		velocity.y = -250
 		can_continue_fire = true # Player is not mid-jump, can continue firing if player keeps button held down
 		shoot_bullet()
+	# Play 'gun empty' noise when out of ammo and player tries to shoot
+	elif Input.is_action_just_pressed("jump_and_shoot") and not is_on_floor() and shots_left <= 0:
+		audio_player.stream = load("res://Sounds/trigger_click.wav")
+		audio_player.play()
 	
 	# Bullets fired continuously when gun button held down
 	if Input.is_action_pressed("jump_and_shoot") and not is_on_floor() and shots_left > 0 and can_continue_fire:
@@ -63,6 +78,14 @@ func _physics_process(delta: float):
 			velocity.y = -250
 			gunboots_duration = 0
 			shoot_bullet()
+	# Play 'gun empty' sound once when clip is empty and shoot button is still held down
+	elif Input.is_action_pressed("jump_and_shoot") and not is_on_floor() and shots_left <= 0 and empty_sound_not_played:
+		gunboots_duration += delta
+		if gunboots_duration >= 0.15:	
+			audio_player.stream = load("res://Sounds/trigger_click.wav")
+			audio_player.play()
+			empty_sound_not_played = false
+			gunboots_duration = 0
 		
 	if Input.is_action_just_released("jump_and_shoot"):
 		gunboots_duration = 0
@@ -70,7 +93,11 @@ func _physics_process(delta: float):
 		
 	# Reload gunboots when on floor
 	if is_on_floor():
+		if (shots_left < total_shots): # Only play reload sound when 1+ bullets in clip used
+			audio_player.stream = load("res://Sounds/reload.wav")
+			audio_player.play()
 		shots_left = total_shots
+		empty_sound_not_played = true
 		# Update bullet count text in GUI
 		get_node("CanvasLayer/Interface").get_child(1).get_child(0).text = str(shots_left) + "/" + str(total_shots)
 		
@@ -129,3 +156,5 @@ func shoot_bullet():
 	var bullet = BULLET_SCENE.instance()
 	get_parent().add_child(bullet)
 	bullet.position = get_node("Position2D").global_position
+	audio_player.stream = load("res://Sounds/gunshot.wav")
+	audio_player.play()

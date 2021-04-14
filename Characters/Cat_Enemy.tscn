@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Characters/Cat_Enemy.gd" type="Script" id=1]
 [ext_resource path="res://Characters/cat.png" type="Texture" id=2]
 [ext_resource path="res://Shaders/GreyColor.shader" type="Shader" id=3]
+[ext_resource path="res://Sounds/enemy_death.wav" type="AudioStream" id=4]
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 3 )
@@ -67,6 +68,9 @@ collision_layer = 2
 [node name="KillShape2D" type="CollisionShape2D" parent="HitDetector"]
 position = Vector2( -29.3022, -44.567 )
 shape = SubResource( 5 )
+
+[node name="DeathAudio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
 [connection signal="body_entered" from="PlayerNearDetector" to="." method="_on_PlayerNearDetector_body_entered"]
 [connection signal="body_exited" from="PlayerNearDetector" to="." method="_on_PlayerNearDetector_body_exited"]
 [connection signal="area_entered" from="HitDetector" to="." method="_on_HitDetector_area_entered"]
