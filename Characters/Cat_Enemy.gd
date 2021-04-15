@@ -29,7 +29,6 @@ func _on_HitDetector_area_shape_entered(area_id, area, area_shape, self_shape):
 	elif area_name == 'StompZone':
 		damaged_animation.play("Damaged")
 		kill_enemy()
-		
 	
 # Make cat pounce when player is near	
 func _on_PlayerNearDetector_body_entered(body):
