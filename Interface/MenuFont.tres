@@ -3,5 +3,5 @@
 [ext_resource path="res://Interface/prstart.ttf" type="DynamicFontData" id=1]
 
 [resource]
-size = 106
+size = 70
 font_data = ExtResource( 1 )

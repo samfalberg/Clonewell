@@ -51,6 +51,7 @@ func _on_EnemyDetector_body_entered(_body):
 		# Prevent user from bring up pause menu while in game over
 		get_node("CanvasLayer/Pause").set_process_input(false)
 		get_tree().paused = true
+		get_node("CanvasLayer/GameOver").get_child(1).get_child(0).get_child(0).get_child(0).text = 'You lose!'
 		get_node("CanvasLayer/GameOver").visible = true
 
 # Add player movement and physics
@@ -93,6 +94,12 @@ func _physics_process(delta: float):
 		
 	# Reload gunboots when on floor
 	if is_on_floor():
+		# Player has reached the end and won the game
+		if self.position.y > 14368:
+			get_tree().paused = true
+			get_node("CanvasLayer/Pause").set_process_input(false)
+			get_node("CanvasLayer/GameOver").get_child(1).get_child(0).get_child(0).get_child(0).text = 'You win!'
+			get_node("CanvasLayer/GameOver").visible = true
 		if (shots_left < total_shots): # Only play reload sound when 1+ bullets in clip used
 			audio_player.stream = load("res://Sounds/reload.wav")
 			audio_player.play()

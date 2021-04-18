@@ -1,8 +1,8 @@
 extends Control
 
 var current_selection = 0
-onready var selector_one = $CenterContainer/VBoxContainer/AgainButton
-onready var selector_two = $CenterContainer/VBoxContainer/QuitButton
+onready var selector_one = $CenterContainer/VBoxContainer2/VBoxContainer/AgainButton
+onready var selector_two = $CenterContainer/VBoxContainer2/VBoxContainer/QuitButton
 
 func _ready():
 	selector_one.grab_focus()

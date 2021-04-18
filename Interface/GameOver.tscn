@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Interface/Counter.tres" type="Theme" id=1]
 [ext_resource path="res://Interface/GameOver.gd" type="Script" id=2]
+[ext_resource path="res://Interface/MenuFont.tres" type="DynamicFont" id=3]
 
 [node name="GameOver" type="Control"]
 anchor_right = 1.0
@@ -19,24 +20,44 @@ color = Color( 0, 0, 0, 0.494118 )
 [node name="CenterContainer" type="CenterContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
-margin_left = 804.0
-margin_top = 501.0
-margin_right = 1116.0
-margin_bottom = 579.0
+[node name="VBoxContainer2" type="VBoxContainer" parent="CenterContainer"]
+margin_left = 575.0
+margin_top = 437.0
+margin_right = 1345.0
+margin_bottom = 642.0
+custom_constants/separation = 50
 
-[node name="AgainButton" type="Button" parent="CenterContainer/VBoxContainer"]
-margin_right = 312.0
+[node name="CenterContainer" type="CenterContainer" parent="CenterContainer/VBoxContainer2"]
+margin_right = 770.0
+margin_bottom = 71.0
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer2/CenterContainer"]
+margin_right = 770.0
+margin_bottom = 71.0
+custom_fonts/font = ExtResource( 3 )
+text = "Placeholder"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/VBoxContainer2"]
+margin_top = 121.0
+margin_right = 770.0
+margin_bottom = 205.0
+custom_constants/separation = 10
+
+[node name="AgainButton" type="Button" parent="CenterContainer/VBoxContainer2/VBoxContainer"]
+margin_right = 770.0
 margin_bottom = 37.0
 theme = ExtResource( 1 )
 text = "Try Again?"
 
-[node name="QuitButton" type="Button" parent="CenterContainer/VBoxContainer"]
-margin_top = 41.0
-margin_right = 312.0
-margin_bottom = 78.0
+[node name="QuitButton" type="Button" parent="CenterContainer/VBoxContainer2/VBoxContainer"]
+margin_top = 47.0
+margin_right = 770.0
+margin_bottom = 84.0
 theme = ExtResource( 1 )
 text = "Quit"
-[connection signal="pressed" from="CenterContainer/VBoxContainer/AgainButton" to="." method="_on_AgainButton_pressed"]
-[connection signal="pressed" from="CenterContainer/VBoxContainer/QuitButton" to="." method="_on_QuitButton_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer2/VBoxContainer/AgainButton" to="." method="_on_AgainButton_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer2/VBoxContainer/QuitButton" to="." method="_on_QuitButton_pressed"]
