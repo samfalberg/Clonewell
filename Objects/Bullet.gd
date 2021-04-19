@@ -21,5 +21,10 @@ func _physics_process(delta: float):
 		# Destroy bullet
 		queue_free() 
 		
+# Destroy bullet when it touches enemy
 func _on_BulletArea_area_entered(area):
+	queue_free()
+
+# Remove bullet when it goes off screen
+func _on_VisibilityNotifier2D_screen_exited():
 	queue_free()
