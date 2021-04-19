@@ -17,7 +17,7 @@ func _on_HitDetector_area_shape_entered(area_id, area, area_shape, self_shape):
 	var collision_name = area.shape_owner_get_owner(shape_find_owner(area_shape))
 	var area_name = collision_name.get_parent().get_name()
 	# If node is bullet, lower health by 1
-	if area_name == 'Bullet':
+	if area_name == 'BulletArea':
 		health -= 1
 		audio_player.stream = load("res://Sounds/enemy_hit.wav")
 		audio_player.play()
